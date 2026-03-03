@@ -3,6 +3,12 @@
 
   // Regular pointy-top hexagon, r=18.5, center at (16.02, 18.5)
   const hex = "16.02,0 32.04,9.25 32.04,27.75 16.02,37 0,27.75 0,9.25";
+
+  // Chevron: the triangle formed by a horizontal divider at y=30
+  // intersecting the hex's bottom edges, down to the hex bottom vertex.
+  // Left/right x computed from hex edge intersections at y=30.
+  const dividerY = 30;
+  const chevron = "3.9,30 28.14,30 16.02,37";
 </script>
 
 <g transform="translate({x}, {y}) scale({scale})" shape-rendering="geometricPrecision">
@@ -13,38 +19,37 @@
     </radialGradient>
   </defs>
 
-  <!-- Hex outline light (slightly larger, sits outside dark outline) -->
+  <!-- Hex outline light (outermost border) -->
   <polygon points={hex} fill="none" stroke="#a4a4a4" stroke-width="0.72" stroke-linejoin="miter"
     transform="translate(16.02, 18.5) scale(1.052) translate(-16.02, -18.5)"/>
 
   <!-- Hex fill -->
   <polygon points={hex} fill="url(#hex-gradient-{number})" fill-rule="evenodd" stroke="none"/>
 
-  <!-- Hex outline dark -->
+  <!-- Chevron (rendered before dark outline so the outline borders it) -->
+  <polygon points={chevron} fill="#ffffff" fill-opacity="0.698" stroke="none"/>
+
+  <!-- Hex outline dark (sits on top, provides gutter border around chevron) -->
   <polygon points={hex} fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linejoin="miter"/>
 
-  <!-- Horizontal line spanning chevron top -->
+  <!-- Divider line at hex edge intersections -->
   <path fill="none" stroke="#1f1f1f" stroke-width="0.96" stroke-linecap="butt" stroke-linejoin="miter"
-    d="M6.4 28L25.6 28"/>
-
-  <!-- Bottom chevron — symmetric, slopes match hex bottom edges -->
-  <polygon points="6.4,28 25.6,28 16.02,33.5" fill="#ffffff" fill-opacity="0.698"
-    stroke="#a4a4a4" stroke-width="0.48" stroke-linejoin="miter"/>
+    d="M3.9 30L28.14 30"/>
 
   <!-- Number: black outline (thick) -->
-  <text x="16.02" y="32.8" text-anchor="middle" dominant-baseline="auto"
+  <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
     fill="none" stroke="#000000" stroke-width="1.5" stroke-linejoin="round"
     paint-order="stroke">{number}</text>
 
   <!-- Number: white outline -->
-  <text x="16.02" y="32.8" text-anchor="middle" dominant-baseline="auto"
+  <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
     fill="none" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"
     paint-order="stroke">{number}</text>
 
   <!-- Number: white fill -->
-  <text x="16.02" y="32.8" text-anchor="middle" dominant-baseline="auto"
+  <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
     fill="#ffffff">{number}</text>
 </g>
