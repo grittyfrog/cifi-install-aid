@@ -47,19 +47,17 @@
   <polygon points={hex} fill="#2f4157" stroke="none" style="mix-blend-mode: color"
     transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
 
-  <!-- Number: black outline (thick) -->
+  <!-- Number: white outline (outermost) -->
   <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
-    fill="none" stroke="#000000" stroke-width="1.5" stroke-linejoin="round"
-    paint-order="stroke">{number}</text>
+    fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round">{number}</text>
 
-  <!-- Number: white outline -->
+  <!-- Number: black outline (middle) -->
   <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
-    fill="none" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round"
-    paint-order="stroke">{number}</text>
+    fill="none" stroke="#000000" stroke-width="1.0" stroke-linejoin="round">{number}</text>
 
-  <!-- Number: white fill -->
+  <!-- Number: white fill (innermost) -->
   <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
     font-family="'Terminess Nerd Font', monospace" font-size="8"
     fill="#ffffff">{number}</text>
