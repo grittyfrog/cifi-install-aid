@@ -6,9 +6,10 @@
 
   // Chevron: the triangle formed by a horizontal divider at y=30
   // intersecting the hex's bottom edges, down to the hex bottom vertex.
-  // Left/right x computed from hex edge intersections at y=30.
-  const dividerY = 30;
   const chevron = "3.9,30 28.14,30 16.02,37";
+
+  // Inner chevron: inset 0.8 units perpendicular from each edge for border.
+  const chevronInner = "6.88,30.8 25.16,30.8 16.02,36.08";
 </script>
 
 <g transform="translate({x}, {y}) scale({scale})" shape-rendering="geometricPrecision">
@@ -26,8 +27,11 @@
   <!-- Hex fill -->
   <polygon points={hex} fill="url(#hex-gradient-{number})" fill-rule="evenodd" stroke="none"/>
 
-  <!-- Chevron (rendered before dark outline so the outline borders it) -->
-  <polygon points={chevron} fill="#ffffff" fill-opacity="0.698" stroke="none"/>
+  <!-- Chevron border (outer portion covered by hex dark outline) -->
+  <polygon points={chevron} fill="#a4a4a4" stroke="none"/>
+
+  <!-- Chevron inner fill -->
+  <polygon points={chevronInner} fill="#ffffff" fill-opacity="0.698" stroke="none"/>
 
   <!-- Hex outline dark (sits on top, provides gutter border around chevron) -->
   <polygon points={hex} fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linejoin="miter"/>
@@ -35,6 +39,10 @@
   <!-- Divider line at hex edge intersections (same color and width as dark outline) -->
   <path fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linecap="butt" stroke-linejoin="miter"
     d="M3.9 30L28.14 30"/>
+
+  <!-- Color tint overlay (multiply blend, like a Krita color mask) -->
+  <polygon points={hex} fill="#2f4157" stroke="none" style="mix-blend-mode: color"
+    transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
 
   <!-- Number: black outline (thick) -->
   <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"

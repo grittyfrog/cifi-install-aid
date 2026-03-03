@@ -1,8 +1,7 @@
 <script>
-  import HexGroup from './lib/HexGroup.svelte';
+  import ShipInstallCard from './lib/ShipInstallCard.svelte';
 
   // Per-hex configuration, keyed by hex number.
-  // Currently just number, but will grow to include icons, calculations, etc.
   const hexes = {
     1: {},
     2: {},
@@ -19,8 +18,8 @@
 </script>
 
 <main>
-  <svg viewBox="-5 -5 152 112" xmlns="http://www.w3.org/2000/svg">
-    <HexGroup hexes={hexes} scale={1} />
+  <svg viewBox="-2 -2 162 136" xmlns="http://www.w3.org/2000/svg">
+    <ShipInstallCard name="CRADLE" hexes={hexes} />
   </svg>
 </main>
 
