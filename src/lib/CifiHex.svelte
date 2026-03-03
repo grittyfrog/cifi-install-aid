@@ -32,8 +32,8 @@
   <!-- Hex outline dark (sits on top, provides gutter border around chevron) -->
   <polygon points={hex} fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linejoin="miter"/>
 
-  <!-- Divider line at hex edge intersections -->
-  <path fill="none" stroke="#1f1f1f" stroke-width="0.96" stroke-linecap="butt" stroke-linejoin="miter"
+  <!-- Divider line at hex edge intersections (same color and width as dark outline) -->
+  <path fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linecap="butt" stroke-linejoin="miter"
     d="M3.9 30L28.14 30"/>
 
   <!-- Number: black outline (thick) -->
