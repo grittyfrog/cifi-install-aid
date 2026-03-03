@@ -1,12 +1,26 @@
 <script>
-  import CifiHex from './lib/CifiHex.svelte';
+  import HexGroup from './lib/HexGroup.svelte';
+
+  // Per-hex configuration, keyed by hex number.
+  // Currently just number, but will grow to include icons, calculations, etc.
+  const hexes = {
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    5: {},
+    6: {},
+    7: {},
+    8: {},
+    9: {},
+    10: {},
+    11: {},
+  };
 </script>
 
 <main>
-  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-    {#each [1, 2, 3, 4, 5] as num, i}
-      <CifiHex number={num} x={40 + i * 60} y={40} scale={2} />
-    {/each}
+  <svg viewBox="-5 -5 152 112" xmlns="http://www.w3.org/2000/svg">
+    <HexGroup hexes={hexes} scale={1} />
   </svg>
 </main>
 
@@ -21,7 +35,7 @@
 
   svg {
     width: 100%;
-    max-width: 800px;
+    max-width: 1000px;
     height: auto;
   }
 </style>
