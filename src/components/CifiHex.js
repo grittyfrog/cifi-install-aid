@@ -1,4 +1,4 @@
-import cellsIcon from '../assets/cells.png?inline';
+import cellsIcon from '../assets/cells.png.js';
 
 const resources = {
   cells: { icon: cellsIcon, color: '#50d890', textIcon: true },

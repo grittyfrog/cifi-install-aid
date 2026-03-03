@@ -1,37 +1,34 @@
-import { defineConfig, createServer } from 'vite';
+import fs from 'fs';
+import path from 'path';
+import { pathToFileURL } from 'url';
+import { defineConfig } from 'vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
 
-function uhtmlPrerender() {
-  let server;
-  let resolvedConfig;
+// Generate base64 JS modules from image assets.
+// Runs at config load time so the files exist before Vite resolves imports.
+const root = process.cwd();
+const assetsDir = path.resolve(root, 'src/assets');
+for (const file of fs.readdirSync(assetsDir)) {
+  if (!/\.(png|jpg|jpeg|gif|webp)$/.test(file)) continue;
+  const data = fs.readFileSync(path.join(assetsDir, file));
+  const ext = path.extname(file).slice(1);
+  const mime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+  const uri = `data:${mime};base64,${data.toString('base64')}`;
+  fs.writeFileSync(
+    path.join(assetsDir, `${file}.js`),
+    `export default "${uri}";\n`,
+  );
+}
 
+function uhtmlPrerender() {
   return {
     name: 'uhtml-prerender',
-    configResolved(config) {
-      resolvedConfig = config;
-    },
-    configureServer(s) {
-      server = s;
-    },
     transformIndexHtml: {
       order: 'pre',
       async handler(indexHtml) {
-        let mod;
-        if (server) {
-          mod = await server.ssrLoadModule('/src/prerender.js');
-        } else {
-          const tmpServer = await createServer({
-            configFile: false,
-            root: resolvedConfig.root,
-            server: { middlewareMode: true },
-            appType: 'custom',
-            plugins: [],
-          });
-          mod = await tmpServer.ssrLoadModule('/src/prerender.js');
-          await tmpServer.close();
-        }
-        const prerendered = mod.getPrerenderedHTML();
-        return indexHtml.replace('<!--PRERENDER-->', prerendered);
+        const abs = pathToFileURL(path.resolve(root, 'src/prerender.js')).href;
+        const { getPrerenderedHTML } = await import(abs);
+        return indexHtml.replace('<!--PRERENDER-->', getPrerenderedHTML());
       },
     },
   };
