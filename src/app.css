@@ -18,3 +18,16 @@ html, body {
   height: 100%;
   background: #1a1a2e;
 }
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+svg {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+}

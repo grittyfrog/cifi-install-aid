@@ -1,9 +1,9 @@
-import { mount } from 'svelte'
-import './app.css'
-import App from './App.svelte'
+import { render, html, svg } from 'uhtml';
+import './app.css';
+import { App } from './components/App.js';
 
-const app = mount(App, {
-  target: document.getElementById('app'),
-})
+function update() {
+  render(document.body, App(html, svg));
+}
 
-export default app
+update();
