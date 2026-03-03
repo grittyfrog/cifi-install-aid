@@ -8,16 +8,22 @@
   // intersecting the hex's bottom edges, down to the hex bottom vertex.
   const chevron = "3.9,30 28.14,30 16.02,37";
 
-  // Inner chevron: inset 0.8 units perpendicular from each edge for border.
-  const chevronInner = "6.88,30.8 25.16,30.8 16.02,36.08";
+  // Inner chevron: inset 0.5 units perpendicular from each edge for thin border.
+  const chevronInner = "5.77,30.5 26.27,30.5 16.02,36.42";
 </script>
 
 <g transform="translate({x}, {y}) scale({scale})" shape-rendering="geometricPrecision">
   <defs>
     <radialGradient id="hex-gradient-{number}" gradientUnits="objectBoundingBox" cx="0" cy="0" fx="0" fy="0" r="1.4142135623731" spreadMethod="pad">
-      <stop stop-color="#414141" offset="0" stop-opacity="1"/>
-      <stop stop-color="#3e3e3e" offset="1" stop-opacity="1"/>
+      <stop stop-color="#404040" offset="0" stop-opacity="1"/>
+      <stop stop-color="#404040" offset="1" stop-opacity="1"/>
     </radialGradient>
+
+    <!-- Chevron inner gradient: lighter than fill, closer to border color -->
+    <linearGradient id="chevron-gradient-{number}" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#a0a0a0" offset="0"/>
+      <stop stop-color="#606060" offset="1"/>
+    </linearGradient>
   </defs>
 
   <!-- Hex outline light (outermost border) -->
@@ -27,11 +33,8 @@
   <!-- Hex fill -->
   <polygon points={hex} fill="url(#hex-gradient-{number})" fill-rule="evenodd" stroke="none"/>
 
-  <!-- Chevron border (outer portion covered by hex dark outline) -->
-  <polygon points={chevron} fill="#a4a4a4" stroke="none"/>
-
-  <!-- Chevron inner fill -->
-  <polygon points={chevronInner} fill="#ffffff" fill-opacity="0.698" stroke="none"/>
+  <!-- Chevron fill (extends to hex edges, gutter provided by dark outline on top) -->
+  <polygon points={chevron} fill="url(#chevron-gradient-{number})" stroke="none"/>
 
   <!-- Hex outline dark (sits on top, provides gutter border around chevron) -->
   <polygon points={hex} fill="none" stroke="#1f1f1f" stroke-width="1.44" stroke-linejoin="miter"/>
