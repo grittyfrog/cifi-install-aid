@@ -3,8 +3,8 @@
 
   // Per-hex configuration, keyed by hex number.
   const hexes = {
-    1: {},
-    2: {},
+    1: { boosts: [["cells", 1]] },
+    2: { boosts: [["cells", 3], ["cells", 1]] },
     3: {},
     4: {},
     5: {},
