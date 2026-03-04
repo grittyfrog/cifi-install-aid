@@ -21,6 +21,9 @@ export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, 
         <filter id=${glowId} x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
         </filter>
+        <filter id=${`title-glow-${name}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+        </filter>
       </defs>
 
       <rect x="0" y="0" width=${cardWidth} height=${cardHeight}
@@ -34,10 +37,22 @@ export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, 
         rx="1" ry="1"
         fill="none" stroke=${color} stroke-width="0.5" stroke-opacity="0.8" />
 
-      <text x=${cardWidth / 2} y=${titleHeight}
+      <text x=${cardWidth / 2} y=${titleHeight + 2}
         text-anchor="middle" dominant-baseline="auto"
-        font-family="'Terminess Nerd Font', monospace" font-size="10"
-        fill="#a4a4a4" letter-spacing="2">${name}</text>
+        font-family="'Terminess Nerd Font', monospace" font-size="14"
+        fill=${color} fill-opacity="0.5" letter-spacing="3"
+        filter=${`url(#title-glow-${name})`}>${name}</text>
+
+      <text x=${cardWidth / 2} y=${titleHeight + 2}
+        text-anchor="middle" dominant-baseline="auto"
+        font-family="'Terminess Nerd Font', monospace" font-size="14"
+        fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round"
+        letter-spacing="3">${name}</text>
+
+      <text x=${cardWidth / 2} y=${titleHeight + 2}
+        text-anchor="middle" dominant-baseline="auto"
+        font-family="'Terminess Nerd Font', monospace" font-size="14"
+        fill="#ffffff" letter-spacing="3">${name}</text>
 
       ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding })}
     </g>
