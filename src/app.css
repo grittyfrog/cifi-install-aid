@@ -62,12 +62,13 @@ main {
 @media (min-width: 1280px) {
   .cards {
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
   }
 
   .cards > svg {
     max-width: none;
-    flex: 1;
+    flex: 0 1 calc(50% - 12px);
     min-width: 500px;
   }
 }
