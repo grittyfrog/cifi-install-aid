@@ -1,4 +1,4 @@
-import { ShipInstallCard } from './ShipInstallCard.js';
+import { ShipInstallCard, cardWidth, cardHeight } from './ShipInstallCard.js';
 
 function makeCradleHexes(generators) {
   return {
@@ -32,6 +32,8 @@ function makeZagreusHexes(generators) {
   };
 }
 
+const vb = `0 0 ${cardWidth} ${cardHeight}`;
+
 export function App(html, svg, { generators = 8 } = {}) {
   const cradleHexes = makeCradleHexes(generators);
   const zagreusHexes = makeZagreusHexes(generators);
@@ -44,10 +46,10 @@ export function App(html, svg, { generators = 8 } = {}) {
         </label>
       </div>
       <div class="cards">
-        <svg viewBox="-1 -1 160 138" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
           ${ShipInstallCard(svg, { name: "CRADLE", hexes: cradleHexes, color: "#3b82f6" })}
         </svg>
-        <svg viewBox="-1 -1 160 138" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
           ${ShipInstallCard(svg, { name: "ZAGREUS", hexes: zagreusHexes, color: "#dc2626" })}
         </svg>
       </div>
