@@ -45,8 +45,32 @@ main {
   text-align: center;
 }
 
-svg {
+.cards {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 1000px;
+}
+
+.cards > svg {
+  width: 100%;
   height: auto;
+}
+
+.cards > svg + svg {
+  border-top: 1px solid #333;
+}
+
+@media (min-width: 1280px) {
+  .cards {
+    flex-direction: row;
+  }
+
+  .cards > svg {
+    width: 50%;
+  }
+
+  .cards > svg + svg {
+    border-top: none;
+    border-left: 1px solid #333;
+  }
 }

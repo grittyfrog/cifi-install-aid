@@ -43,10 +43,14 @@ export function App(html, svg, { generators = 8 } = {}) {
           <input id="generators" type="number" min="1" max="8" value=${generators} />
         </label>
       </div>
-      <svg viewBox="-2 -2 162 268" xmlns="http://www.w3.org/2000/svg">
-        ${ShipInstallCard(svg, { name: "CRADLE", hexes: cradleHexes })}
-        ${ShipInstallCard(svg, { name: "ZAGREUS", hexes: zagreusHexes, y: 132 })}
-      </svg>
+      <div class="cards">
+        <svg viewBox="-1 -1 160 138" xmlns="http://www.w3.org/2000/svg">
+          ${ShipInstallCard(svg, { name: "CRADLE", hexes: cradleHexes, color: "#3b82f6" })}
+        </svg>
+        <svg viewBox="-1 -1 160 138" xmlns="http://www.w3.org/2000/svg">
+          ${ShipInstallCard(svg, { name: "ZAGREUS", hexes: zagreusHexes, color: "#dc2626" })}
+        </svg>
+      </div>
     </main>
   `;
 }

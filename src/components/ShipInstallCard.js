@@ -7,12 +7,20 @@ const titleHeight = 14;
 const cardWidth = groupWidth + padding * 2;
 const cardHeight = groupHeight + padding * 2 + titleHeight;
 
-export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0 }) {
+export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6" }) {
+  const gradId = `bg-${name}`;
   return svg`
     <g transform=${`translate(${x}, ${y})`}>
+      <defs>
+        <linearGradient id=${gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color=${color} stop-opacity="0.05" />
+          <stop offset="50%" stop-color=${color} stop-opacity="0.18" />
+          <stop offset="100%" stop-color=${color} stop-opacity="0.05" />
+        </linearGradient>
+      </defs>
+
       <rect x="0" y="0" width=${cardWidth} height=${cardHeight}
-        rx="2" ry="2"
-        fill="none" stroke="#a4a4a4" stroke-width="1" stroke-linejoin="miter"/>
+        fill=${`url(#${gradId})`} />
 
       <text x=${cardWidth / 2} y=${titleHeight}
         text-anchor="middle" dominant-baseline="auto"
