@@ -21,9 +21,28 @@ html, body {
 
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  gap: 12px;
+}
+
+.controls {
+  color: #a4a4a4;
+  font-family: 'Terminess Nerd Font', monospace;
+  font-size: 14px;
+}
+
+.controls input {
+  width: 3em;
+  background: #2a2a3e;
+  color: #a4a4a4;
+  border: 1px solid #a4a4a4;
+  padding: 2px 4px;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: center;
 }
 
 svg {

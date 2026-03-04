@@ -1,7 +1,11 @@
 import cellsIcon from '../assets/cells.png.js';
+import shardsIcon from '../assets/shards.png.js';
+import researchIcon from '../assets/research.png.js';
 
 const resources = {
   cells: { icon: cellsIcon, color: '#50d890', textIcon: true },
+  shards: { icon: shardsIcon, color: '#a855f7' },
+  research: { icon: researchIcon, color: '#3b82f6' },
 };
 
 const cx = 16.02;
@@ -37,9 +41,10 @@ function renderSingleBoost(svg, [resource, ratio]) {
         fill=${res.color}>×${ratio}</text>
     `;
   }
-  const s = 16;
+  const s = 20;
+  const iconCenter = bodyCenter - 2;
   return svg`
-    <image href=${res.icon} x=${cx - s / 2} y=${bodyCenter - s / 2}
+    <image href=${res.icon} x=${cx - s / 2} y=${iconCenter - s / 2}
       width=${s} height=${s} />
   `;
 }
