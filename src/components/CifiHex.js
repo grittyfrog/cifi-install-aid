@@ -1,11 +1,13 @@
 import cellsIcon from '../assets/cells.png.js';
 import shardsIcon from '../assets/shards.png.js';
 import researchIcon from '../assets/research.png.js';
+import modpointsIcon from '../assets/modpoints.png.js';
 
 const resources = {
   cells: { icon: cellsIcon, color: '#50d890', textIcon: true },
   shards: { icon: shardsIcon, color: '#a855f7' },
   research: { icon: researchIcon, color: '#3b82f6' },
+  modpoints: { icon: modpointsIcon, color: '#ef4444', iconScale: 0.85 },
 };
 
 const cx = 16.02;
@@ -41,7 +43,7 @@ function renderSingleBoost(svg, [resource, ratio]) {
         fill=${res.color}>×${ratio}</text>
     `;
   }
-  const s = 20;
+  const s = 20 * (res.iconScale ?? 1);
   const iconCenter = bodyCenter - 2;
   return svg`
     <image href=${res.icon} x=${cx - s / 2} y=${iconCenter - s / 2}
@@ -52,14 +54,16 @@ function renderSingleBoost(svg, [resource, ratio]) {
 function renderDoubleBoost(svg, boosts) {
   const allIcons = boosts.every(([r]) => !resources[r]?.textIcon);
   if (allIcons) {
-    const s = 11, gap = 2;
-    const totalW = s * 2 + gap;
+    const baseS = 11, gap = 2;
+    const totalW = baseS * 2 + gap;
     const startX = cx - totalW / 2;
     return boosts.map(([resource], i) => {
       const res = resources[resource];
       if (!res) return null;
+      const s = baseS * (res.iconScale ?? 1);
+      const offset = (baseS - s) / 2;
       return svg`
-        <image href=${res.icon} x=${startX + i * (s + gap)} y=${bodyCenter - s / 2}
+        <image href=${res.icon} x=${startX + i * (baseS + gap) + offset} y=${bodyCenter - s / 2}
           width=${s} height=${s} />
       `;
     });
