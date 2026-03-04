@@ -2,6 +2,7 @@ import cellsIcon from '../assets/cells.png.js';
 import shardsIcon from '../assets/shards.png.js';
 import researchIcon from '../assets/research.png.js';
 import modpointsIcon from '../assets/modpoints.png.js';
+import generatorIcon from '../assets/generator.png.js';
 
 const resources = {
   cells: { icon: cellsIcon, color: '#50d890', textIcon: true },
@@ -101,7 +102,7 @@ function renderBoosts(svg, boosts) {
   return null;
 }
 
-export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [] }) {
+export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [], generator = false }) {
   return svg`
     <g transform=${`translate(${x}, ${y}) scale(${scale})`} shape-rendering="geometricPrecision">
       <defs>
@@ -113,6 +114,15 @@ export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [] 
           <stop stop-color="#a0a0a0" offset="0"/>
           <stop stop-color="#606060" offset="1"/>
         </linearGradient>
+        <filter id=${`boost-outline-${number}`} x="-20%" y="-20%" width="140%" height="140%">
+          <feMorphology in="SourceAlpha" operator="dilate" radius="0.6" result="expanded" />
+          <feFlood flood-color="#2f4157" result="color" />
+          <feComposite in="color" in2="expanded" operator="in" result="outline" />
+          <feMerge>
+            <feMergeNode in="outline" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
       <polygon points=${hex} fill="none" stroke="#a4a4a4" stroke-width="0.72" stroke-linejoin="miter"
@@ -130,7 +140,14 @@ export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [] 
       <polygon points=${hex} fill="#2f4157" stroke="none" style="mix-blend-mode: color"
         transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
 
-      ${renderBoosts(svg, boosts)}
+      ${generator ? svg`
+        <image href=${generatorIcon} x=${cx - 12} y=${bodyCenter - 14}
+          width="24" height="24" opacity="0.15" />
+      ` : null}
+
+      <g filter=${generator ? `url(#boost-outline-${number})` : null}>
+        ${renderBoosts(svg, boosts)}
+      </g>
 
       <text x="16.02" y="35" text-anchor="middle" dominant-baseline="auto"
         font-family="'Terminess Nerd Font', monospace" font-size="8"
