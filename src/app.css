@@ -33,17 +33,39 @@ main {
   width: 100%;
   background: #1a1a2e;
   border-bottom: 1px solid #333;
-  padding: 14px 16px;
+  padding: 14px 48px 14px 16px;
   color: #a4a4a4;
   font-family: 'Terminess Nerd Font', monospace;
   font-size: 16px;
 }
 
+.help-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff0c;
+  border: 1px solid #ffffff20;
+  color: #888;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.help-btn:hover {
+  background: #ffffff18;
+  color: #ccc;
+}
+
 .controls-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 12px;
+  gap: 10px 20px;
   flex-wrap: wrap;
 }
 
@@ -78,44 +100,113 @@ main {
   object-fit: contain;
 }
 
-.controls label {
+.input-group {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #ffffff08;
-  border: 1px solid #ffffff18;
-  border-radius: 4px;
-  padding: 8px 14px;
-  color: #666;
-  font-size: inherit;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  gap: 8px;
+  align-items: stretch;
 }
 
-.controls input {
-  width: 3.5em;
-  background: transparent;
-  color: #a4a4a4;
-  border: none;
-  border-left: 1px solid #ffffff18;
-  padding: 2px 0 2px 8px;
+.power-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff0c;
+  border: 1px solid #ffffff20;
+  border-radius: 4px;
+  padding: 8px 14px;
+  user-select: none;
+  touch-action: none;
+}
+
+.power-label {
+  display: flex;
+  flex-direction: column;
+  color: #888;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.power-label small {
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 0.08em;
+}
+
+.power-step {
+  background: #ffffff0c;
+  border: 1px solid #ffffff20;
+  border-radius: 4px;
+  color: #888;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 22px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.power-step:hover {
+  background: #ffffff18;
+  color: #ccc;
+}
+
+.power-segments {
+  display: flex;
+  cursor: pointer;
+  border: 2px solid #ffffff30;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.power-seg {
+  width: 12px;
+  height: 40px;
+  background: #ffffff12;
+  border: none;
+  border-right: 2px solid #ffffff30;
+  padding: 0;
+  pointer-events: none;
+}
+
+.power-seg:last-child {
+  border-right: none;
+}
+
+.power-seg.on {
+  background: #44cc5580;
+}
+
+.power-bar input {
+  width: 4em;
+  background: transparent;
+  color: #ccc;
+  border: none;
+  border-left: 1px solid #ffffff20;
+  padding: 0 0 0 10px;
+  font-family: inherit;
+  font-size: 32px;
   text-align: center;
   outline: none;
 }
 
-.controls input:focus {
+.power-bar input#generators {
+  width: 1.5em;
+}
+
+.power-bar input:focus {
   color: #e0e0e0;
 }
 
-.controls input::-webkit-inner-spin-button,
-.controls input::-webkit-outer-spin-button {
+.power-bar input::-webkit-inner-spin-button,
+.power-bar input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.controls input[type="number"] {
+.power-bar input[type="number"] {
   -moz-appearance: textfield;
 }
 

@@ -138,28 +138,41 @@ export function App(html, svg, { generators = 8, shipsUnlocked = 8, meltdown = 0
   return html`
     <main>
       <div class="controls">
+        <button class="help-btn" title="Help">?</button>
         <div class="controls-row">
-          <div class="ship-selector">
-            ${ships.map((ship, i) => html`
-              <button
-                class=${`ship-btn${i < shipsUnlocked ? ' active' : ''}`}
-                data-ship-index=${i}
-                style=${i < shipsUnlocked ? `border-color: ${ship.color}80; background: ${ship.color}30` : `border-color: #444; background: ${ship.color}15`}
-                title=${ship.name}>
-                <img src=${ship.icon} alt=${ship.name} />
-              </button>
-            `)}
+          <div class="power-bar">
+            <span class="power-label">Ships<small>click latest unlocked</small></span>
+            <div class="ship-selector">
+              ${ships.map((ship, i) => html`
+                <button
+                  class=${`ship-btn${i < shipsUnlocked ? ' active' : ''}`}
+                  data-ship-index=${i}
+                  style=${i < shipsUnlocked ? `border-color: ${ship.color}80; background: ${ship.color}30` : `border-color: #444; background: ${ship.color}15`}
+                  title=${ship.name}>
+                  <img src=${ship.icon} alt=${ship.name} />
+                </button>
+              `)}
+            </div>
           </div>
-          <label>
-            Generators
-            <input id="generators" type="number" min="1" max="8" value=${generators} />
-          </label>
-          ${showMeltdown ? html`
-            <label>
-              Meltdown
-              <input id="meltdown" type="number" min="0.0001" step="0.0001" value=${meltdown} />
-            </label>
-          ` : null}
+          <div class="input-group">
+            <div class="power-bar">
+              <span class="power-label">Gen<small>unlocked</small></span>
+              <div class="power-segments">
+                ${[1,2,3,4,5,6,7,8].map(n => html`
+                  <div class=${`power-seg${n <= generators ? ' on' : ''}`}></div>
+                `)}
+              </div>
+              <button class="power-step" data-step="-1">−</button>
+              <button class="power-step" data-step="+1">+</button>
+              <input id="generators" type="number" min="1" max="8" value=${generators} />
+            </div>
+            ${showMeltdown ? html`
+              <div class="power-bar">
+                <span class="power-label">Meltdown</span>
+                <input id="meltdown" type="number" min="0.0001" step="0.0001" value=${meltdown} />
+              </div>
+            ` : null}
+          </div>
         </div>
       </div>
       <div class="cards">
