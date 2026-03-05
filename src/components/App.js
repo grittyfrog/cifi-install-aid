@@ -1,4 +1,12 @@
 import { ShipInstallCard, cardWidth, cardHeight } from './ShipInstallCard.js';
+import cradleIcon from '../assets/ships/cradle.png.js';
+import auxesiaIcon from '../assets/ships/auxesia.png.js';
+import zagreusIcon from '../assets/ships/zagreus.png.js';
+import hephaestusIcon from '../assets/ships/hephaestus.png.js';
+import demeterIcon from '../assets/ships/demeter.png.js';
+import koiosIcon from '../assets/ships/koios.png.js';
+import zeusIcon from '../assets/ships/zeus.png.js';
+import ouroborosIcon from '../assets/ships/ouroboros.png.js';
 
 function makeCradleHexes(generators) {
   return {
@@ -112,46 +120,54 @@ function makeZeusHexes(generators) {
   };
 }
 
+const ships = [
+  { id: 'cradle', name: 'CRADLE', color: '#3b82f6', icon: cradleIcon, makeHexes: makeCradleHexes },
+  { id: 'auxesia', name: 'AUXESIA', color: '#b87333', icon: auxesiaIcon, makeHexes: makeAuxesiaHexes },
+  { id: 'zagreus', name: 'ZAGREUS', color: '#dc2626', icon: zagreusIcon, makeHexes: makeZagreusHexes },
+  { id: 'hephaestus', name: 'HEPHAESTUS', color: '#22c55e', icon: hephaestusIcon, makeHexes: makeHephaestusHexes },
+  { id: 'demeter', name: 'DEMETER', color: '#06b6d4', icon: demeterIcon, makeHexes: makeDemeterHexes },
+  { id: 'koios', name: 'KOIOS', color: '#8b5cf6', icon: koiosIcon, makeHexes: makeKoiosHexes },
+  { id: 'zeus', name: 'ZEUS', color: '#eab308', icon: zeusIcon, makeHexes: makeZeusHexes },
+  { id: 'ouroboros', name: 'OUROBOROS', color: '#f43f5e', icon: ouroborosIcon, makeHexes: null },
+];
+
 const vb = `0 0 ${cardWidth} ${cardHeight}`;
 
-export function App(html, svg, { generators = 8 } = {}) {
-  const cradleHexes = makeCradleHexes(generators);
-  const auxesiaHexes = makeAuxesiaHexes(generators);
-  const zagreusHexes = makeZagreusHexes(generators);
-  const demeterHexes = makeDemeterHexes(generators);
-  const koiosHexes = makeKoiosHexes(generators);
-  const hephaestusHexes = makeHephaestusHexes(generators);
-  const zeusHexes = makeZeusHexes(generators);
+export function App(html, svg, { generators = 8, shipsUnlocked = 8, meltdown = 0.0001 } = {}) {
+  const showMeltdown = shipsUnlocked >= ships.length;
   return html`
     <main>
       <div class="controls">
-        <label>
-          Generators
-          <input id="generators" type="number" min="1" max="8" value=${generators} />
-        </label>
+        <div class="controls-row">
+          <div class="ship-selector">
+            ${ships.map((ship, i) => html`
+              <button
+                class=${`ship-btn${i < shipsUnlocked ? ' active' : ''}`}
+                data-ship-index=${i}
+                style=${`border-color: ${i < shipsUnlocked ? ship.color : '#444'}`}
+                title=${ship.name}>
+                <img src=${ship.icon} alt=${ship.name} />
+              </button>
+            `)}
+          </div>
+          <label>
+            Generators
+            <input id="generators" type="number" min="1" max="8" value=${generators} />
+          </label>
+          ${showMeltdown ? html`
+            <label>
+              Meltdown
+              <input id="meltdown" type="number" min="0.0001" step="0.0001" value=${meltdown} />
+            </label>
+          ` : null}
+        </div>
       </div>
       <div class="cards">
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "CRADLE", hexes: cradleHexes, color: "#3b82f6" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "AUXESIA", hexes: auxesiaHexes, color: "#b87333" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "ZAGREUS", hexes: zagreusHexes, color: "#dc2626" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "HEPHAESTUS", hexes: hephaestusHexes, color: "#22c55e" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "DEMETER", hexes: demeterHexes, color: "#06b6d4" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "KOIOS", hexes: koiosHexes, color: "#8b5cf6" })}
-        </svg>
-        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-          ${ShipInstallCard(svg, { name: "ZEUS", hexes: zeusHexes, color: "#eab308" })}
-        </svg>
+        ${ships.slice(0, shipsUnlocked).filter(s => s.makeHexes).map(ship => html`
+            <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
+              ${ShipInstallCard(svg, { name: ship.name, hexes: ship.makeHexes(generators), color: ship.color })}
+            </svg>
+        `)}
       </div>
     </main>
   `;
