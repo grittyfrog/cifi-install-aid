@@ -22,10 +22,8 @@ html, body {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   min-height: 100vh;
-  gap: 12px;
 }
 
 .controls {
@@ -35,32 +33,31 @@ main {
   width: 100%;
   background: #1a1a2e;
   border-bottom: 1px solid #333;
-  padding: 8px 16px;
+  padding: 14px 16px;
   color: #a4a4a4;
   font-family: 'Terminess Nerd Font', monospace;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .controls-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .ship-selector {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
 }
 
 .ship-btn {
-  width: 36px;
-  height: 36px;
-  padding: 3px;
-  background: #2a2a3e;
-  border: 2px solid #444;
+  width: 52px;
+  height: 52px;
+  padding: 4px;
+  border: 1px solid #444;
   border-radius: 4px;
   cursor: pointer;
   opacity: 0.35;
@@ -81,41 +78,60 @@ main {
   object-fit: contain;
 }
 
-.controls input {
-  width: 4.5em;
-  background: #2a2a3e;
-  color: #a4a4a4;
-  border: 1px solid #a4a4a4;
-  padding: 2px 4px;
-  font-family: inherit;
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff08;
+  border: 1px solid #ffffff18;
+  border-radius: 4px;
+  padding: 8px 14px;
+  color: #666;
   font-size: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.controls input {
+  width: 3.5em;
+  background: transparent;
+  color: #a4a4a4;
+  border: none;
+  border-left: 1px solid #ffffff18;
+  padding: 2px 0 2px 8px;
+  font-family: inherit;
+  font-size: 16px;
   text-align: center;
+  outline: none;
+}
+
+.controls input:focus {
+  color: #e0e0e0;
+}
+
+.controls input::-webkit-inner-spin-button,
+.controls input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.controls input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .cards {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: start;
+  flex: 1;
   width: 100%;
   padding: 12px;
   gap: 12px;
 }
 
 .cards > svg {
-  width: 100%;
+  flex: 1 1 500px;
+  max-width: 700px;
   height: auto;
-}
-
-@media (min-width: 1280px) {
-  .cards {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .cards > svg {
-    max-width: none;
-    flex: 0 1 calc(50% - 12px);
-    min-width: 500px;
-  }
 }

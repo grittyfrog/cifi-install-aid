@@ -121,14 +121,14 @@ function makeZeusHexes(generators) {
 }
 
 const ships = [
-  { id: 'cradle', name: 'CRADLE', color: '#3b82f6', icon: cradleIcon, makeHexes: makeCradleHexes },
-  { id: 'auxesia', name: 'AUXESIA', color: '#b87333', icon: auxesiaIcon, makeHexes: makeAuxesiaHexes },
-  { id: 'zagreus', name: 'ZAGREUS', color: '#dc2626', icon: zagreusIcon, makeHexes: makeZagreusHexes },
-  { id: 'hephaestus', name: 'HEPHAESTUS', color: '#22c55e', icon: hephaestusIcon, makeHexes: makeHephaestusHexes },
-  { id: 'demeter', name: 'DEMETER', color: '#06b6d4', icon: demeterIcon, makeHexes: makeDemeterHexes },
-  { id: 'koios', name: 'KOIOS', color: '#8b5cf6', icon: koiosIcon, makeHexes: makeKoiosHexes },
-  { id: 'zeus', name: 'ZEUS', color: '#eab308', icon: zeusIcon, makeHexes: makeZeusHexes },
-  { id: 'ouroboros', name: 'OUROBOROS', color: '#f43f5e', icon: ouroborosIcon, makeHexes: null },
+  { id: 'cradle', name: 'CRADLE', color: '#4cc9f0', icon: cradleIcon, makeHexes: makeCradleHexes },
+  { id: 'auxesia', name: 'AUXESIA', color: '#e08830', icon: auxesiaIcon, makeHexes: makeAuxesiaHexes },
+  { id: 'zagreus', name: 'ZAGREUS', color: '#cc2222', icon: zagreusIcon, makeHexes: makeZagreusHexes },
+  { id: 'hephaestus', name: 'HEPHAESTUS', color: '#8bc34a', icon: hephaestusIcon, makeHexes: makeHephaestusHexes },
+  { id: 'demeter', name: 'DEMETER', color: '#22c5cc', icon: demeterIcon, makeHexes: makeDemeterHexes },
+  { id: 'koios', name: 'KOIOS', color: '#5a8a3a', icon: koiosIcon, makeHexes: makeKoiosHexes },
+  { id: 'zeus', name: 'ZEUS', color: '#2e4aad', icon: zeusIcon, makeHexes: makeZeusHexes },
+  { id: 'ouroboros', name: 'OUROBOROS', color: '#7b44c2', icon: ouroborosIcon, makeHexes: null },
 ];
 
 const vb = `0 0 ${cardWidth} ${cardHeight}`;
@@ -144,7 +144,7 @@ export function App(html, svg, { generators = 8, shipsUnlocked = 8, meltdown = 0
               <button
                 class=${`ship-btn${i < shipsUnlocked ? ' active' : ''}`}
                 data-ship-index=${i}
-                style=${`border-color: ${i < shipsUnlocked ? ship.color : '#444'}`}
+                style=${i < shipsUnlocked ? `border-color: ${ship.color}80; background: ${ship.color}30` : `border-color: #444; background: ${ship.color}15`}
                 title=${ship.name}>
                 <img src=${ship.icon} alt=${ship.name} />
               </button>
