@@ -23,8 +23,11 @@ document.addEventListener('input', (e) => {
     update();
   }
   if (e.target.id === 'meltdown') {
-    state.meltdown = Math.max(0.001, parseFloat(e.target.value) || 0.001);
-    update();
+    const val = parseFloat(e.target.value);
+    if (!isNaN(val) && val > 0) {
+      state.meltdown = Math.min(1.999, val);
+      update();
+    }
   }
 });
 

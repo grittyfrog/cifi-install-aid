@@ -165,7 +165,6 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
   return html`
     <main>
       <div class="controls">
-        <button class="help-btn" title="Help">?</button>
         <div class="controls-row">
           <div class="power-bar">
             <span class="power-label">Ships<small>click latest unlocked</small></span>
@@ -196,7 +195,7 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
             ${showMeltdown ? html`
               <div class="power-bar">
                 <span class="power-label">Meltdown</span>
-                <input id="meltdown" type="number" min="0.001" step="0.001" value=${meltdown} />
+                <input id="meltdown" type="text" inputmode="decimal" maxlength="5" value=${meltdown} />
               </div>
             ` : html`
               <button class="power-bar locked unlock-ouro-btn">
