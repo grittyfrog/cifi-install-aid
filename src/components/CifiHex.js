@@ -22,6 +22,13 @@ const bodyCenter = 19.25;
 const hex = "16.02,0 32.04,9.25 32.04,27.75 16.02,37 0,27.75 0,9.25";
 const chevron = "3.9,30 28.14,30 16.02,37";
 
+function boostScale(ratio, baseIcon, baseFont, gap) {
+  const charW = baseFont * 0.75;
+  const baseWidth = baseIcon + gap + `×${ratio}`.length * charW;
+  const maxWidth = 26;
+  return baseWidth <= maxWidth ? 1 : maxWidth / baseWidth;
+}
+
 function boostRowWidth(resource, ratio, iconSize, fontSize, gap) {
   const res = resources[resource];
   if (!res) return 0;
@@ -45,7 +52,8 @@ function renderSingleBoost(svg, [resource, ratio]) {
     `;
   }
   if (res.textIcon) {
-    const s = 10, fs = 9, gap = 0.5;
+    const sc = boostScale(ratio, 10, 9, 0.5);
+    const s = 10 * sc, fs = 9 * sc, gap = 0.5;
     const w = boostRowWidth(resource, ratio, s, fs, gap);
     const startX = cx - w / 2;
     return svg`
@@ -82,7 +90,8 @@ function renderDoubleBoost(svg, boosts) {
       `;
     })}`;
   }
-  const s = 9, fs = 8, gap = 0.5;
+  const minSc = Math.min(...boosts.filter(([r]) => resources[r]?.textIcon).map(([, rat]) => boostScale(rat, 9, 8, 0.5)), 1);
+  const s = 9 * minSc, fs = 8 * minSc, gap = 0.5;
   const rowHeight = s + 2;
   const totalHeight = boosts.length * rowHeight;
   const startY = bodyCenter - totalHeight / 2;

@@ -1,4 +1,5 @@
 import { ShipInstallCard, cardWidth, cardHeight } from './ShipInstallCard.js';
+import { MysteryCard } from './MysteryCard.js';
 import cradleIcon from '../assets/ships/cradle.png.js';
 import auxesiaIcon from '../assets/ships/auxesia.png.js';
 import zagreusIcon from '../assets/ships/zagreus.png.js';
@@ -131,9 +132,35 @@ const ships = [
   { id: 'ouroboros', name: 'OUROBOROS', color: '#7b44c2', icon: ouroborosIcon, makeHexes: null },
 ];
 
+function applyMeltdown(hexes, meltdown) {
+  const effective = {};
+  for (const [num, hex] of Object.entries(hexes)) {
+    const cellBoost = hex.boosts.find(([r]) => r === 'cells');
+    if (cellBoost) {
+      effective[num] = hex.generator ? cellBoost[1] * meltdown : cellBoost[1];
+    }
+  }
+  const values = Object.values(effective);
+  if (values.length === 0) return hexes;
+  const min = Math.min(...values);
+  if (min === 0) return hexes;
+  const result = {};
+  for (const [num, hex] of Object.entries(hexes)) {
+    const cellIdx = hex.boosts.findIndex(([r]) => r === 'cells');
+    if (cellIdx >= 0 && effective[num] !== undefined) {
+      const newBoosts = [...hex.boosts];
+      newBoosts[cellIdx] = ['cells', Math.max(1, Math.round(effective[num] / min))];
+      result[num] = { ...hex, boosts: newBoosts };
+    } else {
+      result[num] = hex;
+    }
+  }
+  return result;
+}
+
 const vb = `0 0 ${cardWidth} ${cardHeight}`;
 
-export function App(html, svg, { generators = 8, shipsUnlocked = 8, meltdown = 0.0001 } = {}) {
+export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0.001 } = {}) {
   const showMeltdown = shipsUnlocked >= ships.length;
   return html`
     <main>
@@ -169,18 +196,31 @@ export function App(html, svg, { generators = 8, shipsUnlocked = 8, meltdown = 0
             ${showMeltdown ? html`
               <div class="power-bar">
                 <span class="power-label">Meltdown</span>
-                <input id="meltdown" type="number" min="0.0001" step="0.0001" value=${meltdown} />
+                <input id="meltdown" type="number" min="0.001" step="0.001" value=${meltdown} />
               </div>
-            ` : null}
+            ` : html`
+              <button class="power-bar locked unlock-ouro-btn">
+                <span class="power-label">Unlock Ouroboros</span>
+              </button>
+            `}
           </div>
         </div>
       </div>
       <div class="cards">
-        ${ships.slice(0, shipsUnlocked).filter(s => s.makeHexes).map(ship => html`
-            <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-              ${ShipInstallCard(svg, { name: ship.name, hexes: ship.makeHexes(generators), color: ship.color })}
-            </svg>
-        `)}
+        ${ships.filter(s => s.makeHexes).map(ship => {
+          const idx = ships.indexOf(ship);
+          if (idx < shipsUnlocked) {
+            return html`
+              <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
+                ${ShipInstallCard(svg, { name: ship.name, hexes: showMeltdown ? applyMeltdown(ship.makeHexes(generators), meltdown) : ship.makeHexes(generators), color: ship.color })}
+              </svg>`;
+          }
+          return html`
+            <svg class="mystery-card" viewBox=${vb} xmlns="http://www.w3.org/2000/svg"
+              data-ship-index=${idx}>
+              ${MysteryCard(svg, { name: ship.name, color: ship.color, index: idx })}
+            </svg>`;
+        })}
       </div>
     </main>
   `;

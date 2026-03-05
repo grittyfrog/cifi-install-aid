@@ -210,6 +210,31 @@ main {
   -moz-appearance: textfield;
 }
 
+.power-bar.locked {
+  opacity: 0.4;
+}
+
+.unlock-ouro-btn {
+  cursor: pointer;
+  font-family: 'Terminess Nerd Font', monospace;
+  font-size: 16px;
+  transition: opacity 0.15s;
+}
+
+.unlock-ouro-btn:hover {
+  opacity: 0.7;
+}
+
+.mystery-card {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.mystery-card:hover {
+  opacity: 0.85;
+}
+
 .cards {
   display: flex;
   flex-wrap: wrap;
