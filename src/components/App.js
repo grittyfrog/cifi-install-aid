@@ -48,6 +48,38 @@ function makeZagreusHexes(generators) {
   };
 }
 
+function makeDemeterHexes(generators) {
+  return {
+    1: { boosts: [["special", "?"]] },
+    2: { boosts: [["shards", 1]] },
+    3: { boosts: [["cells", 1]] },
+    4: { boosts: [["cells", 2]], generator: true },
+    5: { boosts: [["cells", 2]], generator: true },
+    6: { boosts: [["modpoints", 1]] },
+    7: { boosts: [["cells", 2]], generator: true },
+    8: { boosts: [["cells", generators]], generator: true },
+    9: { boosts: [["cells", 1]] },
+    10: { boosts: [["shards", 1]] },
+    11: { boosts: [["research", 1]] },
+  };
+}
+
+function makeKoiosHexes(generators) {
+  return {
+    1: { boosts: [["cells", 1]] },
+    2: { boosts: [["shards", 1]] },
+    3: { boosts: [["modpoints", 1]] },
+    4: { boosts: [["cells", 2]], generator: true },
+    5: { boosts: [["research", 1]] },
+    6: { boosts: [["modpoints", 1], ["shards", 1]] },
+    7: { boosts: [["cells", Math.min(generators, 6)]], generator: true },
+    8: { boosts: [["cells", generators]], generator: true },
+    9: { boosts: [["cells", 1]] },
+    10: { boosts: [["shards", 1]] },
+    11: { boosts: [["research", 1]] },
+  };
+}
+
 function makeHephaestusHexes(generators) {
   return {
     1: { boosts: [["cells", Math.min(generators, 4)]], generator: true },
@@ -70,6 +102,8 @@ export function App(html, svg, { generators = 8 } = {}) {
   const cradleHexes = makeCradleHexes(generators);
   const auxesiaHexes = makeAuxesiaHexes(generators);
   const zagreusHexes = makeZagreusHexes(generators);
+  const demeterHexes = makeDemeterHexes(generators);
+  const koiosHexes = makeKoiosHexes(generators);
   const hephaestusHexes = makeHephaestusHexes(generators);
   return html`
     <main>
@@ -91,6 +125,12 @@ export function App(html, svg, { generators = 8 } = {}) {
         </svg>
         <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
           ${ShipInstallCard(svg, { name: "HEPHAESTUS", hexes: hephaestusHexes, color: "#22c55e" })}
+        </svg>
+        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
+          ${ShipInstallCard(svg, { name: "DEMETER", hexes: demeterHexes, color: "#06b6d4" })}
+        </svg>
+        <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
+          ${ShipInstallCard(svg, { name: "KOIOS", hexes: koiosHexes, color: "#8b5cf6" })}
         </svg>
       </div>
     </main>

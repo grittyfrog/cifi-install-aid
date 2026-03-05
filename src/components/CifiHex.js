@@ -9,6 +9,7 @@ const resources = {
   shards: { icon: shardsIcon, color: '#a855f7' },
   research: { icon: researchIcon, color: '#3b82f6' },
   modpoints: { icon: modpointsIcon, color: '#ef4444', iconScale: 0.85 },
+  special: { color: '#facc15', textOnly: true },
 };
 
 const cx = 16.02;
@@ -31,6 +32,14 @@ function boostRowWidth(resource, ratio, iconSize, fontSize, gap) {
 function renderSingleBoost(svg, [resource, ratio]) {
   const res = resources[resource];
   if (!res) return null;
+  if (res.textOnly) {
+    return svg`
+      <text x=${cx} y=${bodyCenter}
+        text-anchor="middle" dominant-baseline="central"
+        font-family="'Terminess Nerd Font', monospace" font-size="16"
+        fill=${res.color}>${ratio}</text>
+    `;
+  }
   if (res.textIcon) {
     const s = 10, fs = 9, gap = 0.5;
     const w = boostRowWidth(resource, ratio, s, fs, gap);
@@ -55,10 +64,10 @@ function renderSingleBoost(svg, [resource, ratio]) {
 function renderDoubleBoost(svg, boosts) {
   const allIcons = boosts.every(([r]) => !resources[r]?.textIcon);
   if (allIcons) {
-    const baseS = 11, gap = 2;
+    const baseS = 13, gap = 2;
     const totalW = baseS * 2 + gap;
     const startX = cx - totalW / 2;
-    return boosts.map(([resource], i) => {
+    return svg`${boosts.map(([resource], i) => {
       const res = resources[resource];
       if (!res) return null;
       const s = baseS * (res.iconScale ?? 1);
@@ -67,7 +76,7 @@ function renderDoubleBoost(svg, boosts) {
         <image href=${res.icon} x=${startX + i * (baseS + gap) + offset} y=${bodyCenter - s / 2}
           width=${s} height=${s} />
       `;
-    });
+    })}`;
   }
   const s = 9, fs = 8, gap = 0.5;
   const rowHeight = s + 2;
