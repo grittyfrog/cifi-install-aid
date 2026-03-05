@@ -1,4 +1,5 @@
-import { HexGroup } from './HexGroup.js';
+import { HexGroup, layout, hexX as layoutHexX, hexY as layoutHexY } from './HexGroup.js';
+import { HexOverlay } from './HexAnnotation.js';
 
 const groupWidth = 142;
 const groupHeight = 102;
@@ -7,7 +8,7 @@ const titleHeight = 14;
 export const cardWidth = groupWidth + padding * 2;
 export const cardHeight = groupHeight + padding * 2 + titleHeight;
 
-export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6" }) {
+export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6", selectedHex = null }) {
   const gradId = `bg-${name}`;
   const glowId = `glow-${name}`;
   return svg`
@@ -54,7 +55,19 @@ export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, 
         font-family="'Terminess Nerd Font', monospace" font-size="14"
         fill="#ffffff" letter-spacing="3">${name}</text>
 
-      ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding })}
+      ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding, shipId: name })}
+
+      ${selectedHex != null && hexes[selectedHex] ? (() => {
+        const entry = layout.find(([n]) => n === selectedHex);
+        if (!entry) return null;
+        const [, col, row] = entry;
+        const hx = padding + layoutHexX(col, row);
+        const hy = titleHeight + padding + layoutHexY(row);
+        return HexOverlay(svg, {
+          hexX: hx, hexY: hy, number: selectedHex,
+          color, cardWidth, cardHeight
+        });
+      })() : null}
     </g>
   `;
 }

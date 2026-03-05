@@ -1,6 +1,7 @@
 import { render, html, svg } from 'uhtml';
 import './app.css';
-import { App } from './components/App.js';
+import { App, ships, applyMeltdown } from './components/App.js';
+import { hexAnnotationRows } from './components/HexAnnotation.js';
 
 function loadState() {
   try {
@@ -10,11 +11,74 @@ function loadState() {
   return { generators: 1, shipsUnlocked: 1, meltdown: 0.001 };
 }
 
-const state = loadState();
+const state = { ...loadState(), selectedHex: null };
+
+let tooltipEl = null;
+
+function getTooltipEl() {
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.className = 'hex-tooltip';
+    document.body.appendChild(tooltipEl);
+  }
+  return tooltipEl;
+}
+
+function positionTooltip() {
+  const tip = getTooltipEl();
+  const sel = state.selectedHex;
+  if (!sel) {
+    tip.style.display = 'none';
+    return;
+  }
+
+  const hexEl = document.querySelector(`.cifi-hex[data-ship-id="${sel.ship}"][data-hex-number="${sel.hex}"]`);
+  if (!hexEl) { tip.style.display = 'none'; return; }
+
+  const ship = ships.find(s => s.name === sel.ship);
+  if (!ship || !ship.makeHexes) { tip.style.display = 'none'; return; }
+
+  const showMeltdown = state.shipsUnlocked >= ships.length;
+  const hexes = showMeltdown ? applyMeltdown(ship.makeHexes(state.generators), state.meltdown) : ship.makeHexes(state.generators);
+  const hexData = hexes[sel.hex];
+  if (!hexData) { tip.style.display = 'none'; return; }
+
+  const rows = hexAnnotationRows({ boosts: hexData.boosts, generator: !!hexData.generator, number: sel.hex });
+
+  const hexRect = hexEl.getBoundingClientRect();
+  const hexCenterX = hexRect.left + hexRect.width / 2;
+  const hexCenterY = hexRect.top + hexRect.height / 2;
+  const rightSide = hexCenterX < window.innerWidth / 2;
+
+  tip.style.display = '';
+  tip.style.borderColor = ship.color;
+  tip.innerHTML = rows.map(row =>
+    `<div class="hex-tooltip-row">${row.lines.map(l => `<div>${l}</div>`).join('')}</div>`
+  ).join('');
+
+  // measure then position
+  const tipRect = tip.getBoundingClientRect();
+  const gap = 12;
+  let left, top;
+  if (rightSide) {
+    left = hexRect.right + gap;
+  } else {
+    left = hexRect.left - tipRect.width - gap;
+  }
+  top = hexCenterY - tipRect.height / 2;
+  // clamp to viewport
+  top = Math.max(8, Math.min(window.innerHeight - tipRect.height - 8, top));
+  left = Math.max(8, Math.min(window.innerWidth - tipRect.width - 8, left));
+
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
+}
 
 function update() {
   render(document.body, App(html, svg, state));
-  localStorage.setItem('cifi-state', JSON.stringify(state));
+  positionTooltip();
+  const { selectedHex: _, ...persist } = state;
+  localStorage.setItem('cifi-state', JSON.stringify(persist));
 }
 
 document.addEventListener('input', (e) => {
@@ -67,6 +131,23 @@ document.addEventListener('pointerup', () => {
 });
 
 document.addEventListener('click', (e) => {
+  const hexEl = e.target.closest('.cifi-hex');
+  if (hexEl) {
+    const ship = hexEl.dataset.shipId;
+    const hex = parseInt(hexEl.dataset.hexNumber);
+    if (state.selectedHex?.ship === ship && state.selectedHex?.hex === hex) {
+      state.selectedHex = null;
+    } else {
+      state.selectedHex = { ship, hex };
+    }
+    update();
+    return;
+  }
+  if (state.selectedHex) {
+    state.selectedHex = null;
+    update();
+    return;
+  }
   const step = e.target.closest('.power-step');
   if (step) {
     state.generators = Math.max(1, Math.min(8, state.generators + parseInt(step.dataset.step)));

@@ -121,7 +121,7 @@ function makeZeusHexes(generators) {
   };
 }
 
-const ships = [
+export const ships = [
   { id: 'cradle', name: 'CRADLE', color: '#4cc9f0', icon: cradleIcon, makeHexes: makeCradleHexes },
   { id: 'auxesia', name: 'AUXESIA', color: '#e08830', icon: auxesiaIcon, makeHexes: makeAuxesiaHexes },
   { id: 'zagreus', name: 'ZAGREUS', color: '#cc2222', icon: zagreusIcon, makeHexes: makeZagreusHexes },
@@ -132,7 +132,7 @@ const ships = [
   { id: 'ouroboros', name: 'OUROBOROS', color: '#7b44c2', icon: ouroborosIcon, makeHexes: null },
 ];
 
-function applyMeltdown(hexes, meltdown) {
+export function applyMeltdown(hexes, meltdown) {
   const effective = {};
   for (const [num, hex] of Object.entries(hexes)) {
     const cellBoost = hex.boosts.find(([r]) => r === 'cells');
@@ -160,7 +160,7 @@ function applyMeltdown(hexes, meltdown) {
 
 const vb = `0 0 ${cardWidth} ${cardHeight}`;
 
-export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0.001 } = {}) {
+export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0.001, selectedHex = null } = {}) {
   const showMeltdown = shipsUnlocked >= ships.length;
   return html`
     <main>
@@ -211,7 +211,12 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
           if (idx < shipsUnlocked) {
             return html`
               <svg viewBox=${vb} xmlns="http://www.w3.org/2000/svg">
-                ${ShipInstallCard(svg, { name: ship.name, hexes: showMeltdown ? applyMeltdown(ship.makeHexes(generators), meltdown) : ship.makeHexes(generators), color: ship.color })}
+                ${ShipInstallCard(svg, {
+                  name: ship.name,
+                  hexes: showMeltdown ? applyMeltdown(ship.makeHexes(generators), meltdown) : ship.makeHexes(generators),
+                  color: ship.color,
+                  selectedHex: selectedHex?.ship === ship.name ? selectedHex.hex : null
+                })}
               </svg>`;
           }
           return html`

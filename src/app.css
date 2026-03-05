@@ -229,3 +229,33 @@ main {
   max-width: 700px;
   height: auto;
 }
+
+.cifi-hex:hover .hex-hover-glow {
+  stroke-opacity: 0.4;
+}
+
+.cifi-hex:hover {
+  filter: brightness(1.15);
+}
+
+.hex-tooltip {
+  position: fixed;
+  z-index: 100;
+  background: rgba(10, 10, 20, 0.92);
+  border: 1px solid #888;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Terminess Nerd Font', monospace;
+  font-size: 14px;
+  color: #ccc;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.hex-tooltip-row {
+  line-height: 1.4;
+}
+
+.hex-tooltip-row + .hex-tooltip-row {
+  margin-top: 6px;
+}

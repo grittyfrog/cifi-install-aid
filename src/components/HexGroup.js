@@ -13,19 +13,21 @@ const hStep = visualWidth + gap;
 const vStep = visualHeight * 0.75 + gap;
 const rowOffset = hStep / 2;
 
-function hexX(col, row) {
+export function hexX(col, row) {
   return col * hStep + (row % 2 === 1 ? rowOffset : 0);
 }
 
-function hexY(row) {
+export function hexY(row) {
   return row * vStep;
 }
 
-export function HexGroup(svg, { hexes = {}, x = 0, y = 0, scale = 1 }) {
+export { layout };
+
+export function HexGroup(svg, { hexes = {}, x = 0, y = 0, scale = 1, shipId = '' }) {
   return svg`
     <g transform=${`translate(${x}, ${y}) scale(${scale})`}>
       ${layout.map(([number, col, row]) =>
-        CifiHex(svg, { number, x: hexX(col, row), y: hexY(row), ...(hexes[number] || {}) })
+        CifiHex(svg, { number, x: hexX(col, row), y: hexY(row), shipId, ...(hexes[number] || {}) })
       )}
     </g>
   `;

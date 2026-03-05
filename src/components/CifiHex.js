@@ -124,9 +124,11 @@ function renderBoosts(svg, boosts) {
   return null;
 }
 
-export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [], generator = false }) {
+export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [], generator = false, shipId = '' }) {
   return svg`
-    <g transform=${`translate(${x}, ${y}) scale(${scale})`} shape-rendering="geometricPrecision">
+    <g class="cifi-hex" data-hex-number=${number} data-ship-id=${shipId}
+      transform=${`translate(${x}, ${y}) scale(${scale})`} shape-rendering="geometricPrecision"
+      style="cursor: pointer">
       <defs>
         <radialGradient id=${`hex-gradient-${number}`} gradientUnits="objectBoundingBox" cx="0" cy="0" fx="0" fy="0" r="1.4142135623731" spreadMethod="pad">
           <stop stop-color="#404040" offset="0" stop-opacity="1"/>
@@ -160,6 +162,9 @@ export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [],
         d="M3.9 30L28.14 30"/>
 
       <polygon points=${hex} fill="#2f4157" stroke="none" style="mix-blend-mode: color"
+        transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
+
+      <polygon points=${hex} class="hex-hover-glow" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0"
         transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
 
       ${generator ? svg`
