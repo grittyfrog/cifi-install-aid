@@ -3,12 +3,16 @@ import shardsIcon from '../assets/shards.png.js';
 import researchIcon from '../assets/research.png.js';
 import modpointsIcon from '../assets/modpoints.png.js';
 import generatorIcon from '../assets/generator.png.js';
+import materialsIcon from '../assets/materials.png.js';
+import academyPointsIcon from '../assets/academy_points.png.js';
 
 const resources = {
   cells: { icon: cellsIcon, color: '#50d890', textIcon: true },
   shards: { icon: shardsIcon, color: '#a855f7' },
   research: { icon: researchIcon, color: '#3b82f6' },
   modpoints: { icon: modpointsIcon, color: '#ef4444', iconScale: 0.85 },
+  materials: { icon: materialsIcon, color: '#f59e0b' },
+  academy_points: { icon: academyPointsIcon, color: '#facc15' },
   special: { color: '#facc15', textOnly: true },
 };
 
@@ -83,7 +87,7 @@ function renderDoubleBoost(svg, boosts) {
   const totalHeight = boosts.length * rowHeight;
   const startY = bodyCenter - totalHeight / 2;
   const maxW = Math.max(...boosts.map(([r, rat]) => boostRowWidth(r, rat, s, fs, gap)));
-  return boosts.map(([resource, ratio], i) => {
+  return svg`${boosts.map(([resource, ratio], i) => {
     const res = resources[resource];
     if (!res) return null;
     const rowY = startY + i * rowHeight;
@@ -102,7 +106,7 @@ function renderDoubleBoost(svg, boosts) {
       <image href=${res.icon} x=${cx - s / 2} y=${rowY}
         width=${s} height=${s} />
     `;
-  });
+  })}`;
 }
 
 function renderBoosts(svg, boosts) {
