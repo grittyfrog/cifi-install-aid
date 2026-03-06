@@ -238,6 +238,10 @@ main {
   filter: brightness(1.15);
 }
 
+.cell-mult-btn:hover text[fill="#fff"] {
+  fill-opacity: 1;
+}
+
 .hex-tooltip {
   position: fixed;
   z-index: 100;

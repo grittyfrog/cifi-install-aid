@@ -6,9 +6,9 @@ import { hexAnnotationRows } from './components/HexAnnotation.js';
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem('cifi-state'));
-    if (saved) return { generators: saved.generators ?? 1, shipsUnlocked: saved.shipsUnlocked ?? 1, meltdown: saved.meltdown ?? 0.001 };
+    if (saved) return { generators: saved.generators ?? 1, shipsUnlocked: saved.shipsUnlocked ?? 1, meltdown: saved.meltdown ?? 0.001, cellMultipliers: saved.cellMultipliers ?? {} };
   } catch {}
-  return { generators: 1, shipsUnlocked: 1, meltdown: 0.001 };
+  return { generators: 1, shipsUnlocked: 1, meltdown: 0.001, cellMultipliers: {} };
 }
 
 const state = { ...loadState(), selectedHex: null };
@@ -43,7 +43,9 @@ function positionTooltip() {
   const hexData = hexes[sel.hex];
   if (!hexData) { tip.style.display = 'none'; return; }
 
-  const rows = hexAnnotationRows({ boosts: hexData.boosts, generator: !!hexData.generator, number: sel.hex, showMeltdown });
+  const mult = state.cellMultipliers[sel.ship] || 1;
+  const boosts = hexData.boosts.map(([r, v]) => r === 'cells' ? [r, v * mult] : [r, v]);
+  const rows = hexAnnotationRows({ boosts, generator: !!hexData.generator, number: sel.hex, showMeltdown });
 
   const hexRect = hexEl.getBoundingClientRect();
   const hexCenterX = hexRect.left + hexRect.width / 2;
@@ -139,6 +141,15 @@ document.addEventListener('pointerup', () => {
 });
 
 document.addEventListener('click', (e) => {
+  const multBtn = e.target.closest('.cell-mult-btn');
+  if (multBtn) {
+    const shipId = multBtn.dataset.shipId;
+    const step = parseInt(multBtn.dataset.step);
+    const current = state.cellMultipliers[shipId] || 1;
+    state.cellMultipliers[shipId] = Math.max(1, Math.min(100, current + step));
+    update();
+    return;
+  }
   const hexEl = e.target.closest('.cifi-hex');
   if (hexEl) {
     const ship = hexEl.dataset.shipId;
@@ -180,5 +191,8 @@ document.addEventListener('click', (e) => {
   state.shipsUnlocked = index + 1;
   update();
 });
+
+window.addEventListener('scroll', positionTooltip, true);
+window.addEventListener('resize', positionTooltip);
 
 update();

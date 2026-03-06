@@ -36,4 +36,5 @@ function uhtmlPrerender() {
 
 export default defineConfig({
   plugins: [uhtmlPrerender(), viteSingleFile()],
+  build: { outDir: 'docs' },
 });

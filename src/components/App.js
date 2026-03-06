@@ -160,7 +160,7 @@ export function applyMeltdown(hexes, meltdown) {
 
 const vb = `0 0 ${cardWidth} ${cardHeight}`;
 
-export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0.001, selectedHex = null } = {}) {
+export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0.001, selectedHex = null, cellMultipliers = {} } = {}) {
   const showMeltdown = shipsUnlocked >= ships.length;
   return html`
     <main>
@@ -216,7 +216,8 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
                   hexes: showMeltdown ? applyMeltdown(ship.makeHexes(generators), meltdown) : ship.makeHexes(generators),
                   color: ship.color,
                   selectedHex: selectedHex?.ship === ship.name ? selectedHex.hex : null,
-                  showGenerators: showMeltdown
+                  showGenerators: showMeltdown,
+                  cellMultiplier: cellMultipliers[ship.name] || 1
                 })}
               </svg>`;
           }

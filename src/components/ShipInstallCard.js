@@ -1,5 +1,6 @@
 import { HexGroup, layout, hexX as layoutHexX, hexY as layoutHexY } from './HexGroup.js';
 import { HexOverlay } from './HexAnnotation.js';
+import cellsIcon from '../assets/cells.png.js';
 
 const groupWidth = 142;
 const groupHeight = 102;
@@ -8,7 +9,20 @@ const titleHeight = 14;
 export const cardWidth = groupWidth + padding * 2;
 export const cardHeight = groupHeight + padding * 2 + titleHeight;
 
-export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6", selectedHex = null, showGenerators = false }) {
+function multiplyCells(hexes, mult) {
+  if (mult === 1) return hexes;
+  const result = {};
+  for (const [num, hex] of Object.entries(hexes)) {
+    const newBoosts = hex.boosts.map(([r, v]) =>
+      r === 'cells' ? [r, v * mult] : [r, v]
+    );
+    result[num] = { ...hex, boosts: newBoosts };
+  }
+  return result;
+}
+
+export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6", selectedHex = null, showGenerators = false, cellMultiplier = 1 }) {
+  const appliedHexes = multiplyCells(hexes, cellMultiplier);
   const gradId = `bg-${name}`;
   const glowId = `glow-${name}`;
   return svg`
@@ -55,7 +69,35 @@ export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, 
         font-family="'Terminess Nerd Font', monospace" font-size="14"
         fill="#ffffff" letter-spacing="3">${name}</text>
 
-      ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding, shipId: name, showGenerators })}
+      <g class="cell-multiplier-stepper" data-ship-id=${name}>
+        <g class="cell-mult-btn" data-ship-id=${name} data-step="-1" style="cursor: pointer">
+          <rect x=${cardWidth - 28} y="0" width="12" height="16" fill="transparent" />
+          <text x=${cardWidth - 23} y="8" text-anchor="middle" dominant-baseline="central"
+            font-family="'Terminess Nerd Font', monospace" font-size="10"
+            fill="none" stroke="#000" stroke-width="1.5" stroke-linejoin="round">◂</text>
+          <text x=${cardWidth - 23} y="8" text-anchor="middle" dominant-baseline="central"
+            font-family="'Terminess Nerd Font', monospace" font-size="10"
+            fill="#fff" fill-opacity="0.5">◂</text>
+        </g>
+        <image href=${cellsIcon} x=${cardWidth - 19} y="4" width="8" height="8" />
+        <text x=${cardWidth - 10} y="9" text-anchor="middle" dominant-baseline="central"
+          font-family="'Terminess Nerd Font', monospace" font-size="6"
+          fill="none" stroke="#000" stroke-width="1.5" stroke-linejoin="round">×${cellMultiplier}</text>
+        <text x=${cardWidth - 10} y="9" text-anchor="middle" dominant-baseline="central"
+          font-family="'Terminess Nerd Font', monospace" font-size="6"
+          fill="#fff">×${cellMultiplier}</text>
+        <g class="cell-mult-btn" data-ship-id=${name} data-step="1" style="cursor: pointer">
+          <rect x=${cardWidth - 7} y="0" width="7" height="16" fill="transparent" />
+          <text x=${cardWidth - 3.5} y="8" text-anchor="middle" dominant-baseline="central"
+            font-family="'Terminess Nerd Font', monospace" font-size="10"
+            fill="none" stroke="#000" stroke-width="1.5" stroke-linejoin="round">▸</text>
+          <text x=${cardWidth - 3.5} y="8" text-anchor="middle" dominant-baseline="central"
+            font-family="'Terminess Nerd Font', monospace" font-size="10"
+            fill="#fff" fill-opacity="0.5">▸</text>
+        </g>
+      </g>
+
+      ${HexGroup(svg, { hexes: appliedHexes, x: padding, y: titleHeight + padding, shipId: name, showGenerators })}
 
       ${selectedHex != null && hexes[selectedHex] ? (() => {
         const entry = layout.find(([n]) => n === selectedHex);
