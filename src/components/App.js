@@ -215,7 +215,8 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
                   name: ship.name,
                   hexes: showMeltdown ? applyMeltdown(ship.makeHexes(generators), meltdown) : ship.makeHexes(generators),
                   color: ship.color,
-                  selectedHex: selectedHex?.ship === ship.name ? selectedHex.hex : null
+                  selectedHex: selectedHex?.ship === ship.name ? selectedHex.hex : null,
+                  showGenerators: showMeltdown
                 })}
               </svg>`;
           }

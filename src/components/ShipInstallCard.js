@@ -8,7 +8,7 @@ const titleHeight = 14;
 export const cardWidth = groupWidth + padding * 2;
 export const cardHeight = groupHeight + padding * 2 + titleHeight;
 
-export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6", selectedHex = null }) {
+export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, color = "#3b82f6", selectedHex = null, showGenerators = false }) {
   const gradId = `bg-${name}`;
   const glowId = `glow-${name}`;
   return svg`
@@ -55,7 +55,7 @@ export function ShipInstallCard(svg, { name = "SHIP", hexes = {}, x = 0, y = 0, 
         font-family="'Terminess Nerd Font', monospace" font-size="14"
         fill="#ffffff" letter-spacing="3">${name}</text>
 
-      ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding, shipId: name })}
+      ${HexGroup(svg, { hexes, x: padding, y: titleHeight + padding, shipId: name, showGenerators })}
 
       ${selectedHex != null && hexes[selectedHex] ? (() => {
         const entry = layout.find(([n]) => n === selectedHex);

@@ -43,22 +43,30 @@ function positionTooltip() {
   const hexData = hexes[sel.hex];
   if (!hexData) { tip.style.display = 'none'; return; }
 
-  const rows = hexAnnotationRows({ boosts: hexData.boosts, generator: !!hexData.generator, number: sel.hex });
+  const rows = hexAnnotationRows({ boosts: hexData.boosts, generator: !!hexData.generator, number: sel.hex, showMeltdown });
 
   const hexRect = hexEl.getBoundingClientRect();
   const hexCenterX = hexRect.left + hexRect.width / 2;
   const hexCenterY = hexRect.top + hexRect.height / 2;
   const rightSide = hexCenterX < window.innerWidth / 2;
 
+  // scale tooltip relative to rendered hex size (intrinsic height is 37 SVG units)
+  const rawScale = hexRect.height / 37;
+  const scale = Math.max(1, Math.sqrt(rawScale));
+  const fontSize = 14 * scale;
+  const padding = 10 * scale;
+
   tip.style.display = '';
   tip.style.borderColor = ship.color;
-  tip.innerHTML = rows.map(row =>
-    `<div class="hex-tooltip-row">${row.lines.map(l => `<div>${l}</div>`).join('')}</div>`
+  tip.style.fontSize = `${fontSize}px`;
+  tip.style.padding = `${padding}px ${padding * 1.4}px`;
+  tip.innerHTML = rows.map((row, i) =>
+    `<div class="hex-tooltip-row"${i > 0 ? ` style="margin-top:${6 * scale}px"` : ''}>${row.lines.map(l => `<div>${l}</div>`).join('')}</div>`
   ).join('');
 
   // measure then position
   const tipRect = tip.getBoundingClientRect();
-  const gap = 12;
+  const gap = 12 * scale;
   let left, top;
   if (rightSide) {
     left = hexRect.right + gap;

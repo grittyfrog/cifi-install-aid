@@ -3,29 +3,24 @@ const bodyCenter = 19.25;
 const numberY = 35;
 const hexPoints = "16.02,0 32.04,9.25 32.04,27.75 16.02,37 0,27.75 0,9.25";
 
-const resourceNames = {
-  cells: 'Cell output',
-  shards: 'Shard generation',
-  research: 'Research output',
-  modpoints: 'Mod Point generation',
-  materials: 'Material generation',
-  academy_points: 'Academy Point generation',
-  special: 'Special effect',
-};
-
 const textIconResources = new Set(['cells']);
 
 function boostLabel(resource, ratio) {
-  const name = resourceNames[resource] || resource;
-  if (resource === 'special') return [`${name}: ${ratio}`];
-  if (resource === 'cells' && typeof ratio === 'number' && ratio > 1) {
+  if (resource === 'cells') {
+    if (ratio === 1) return ['Increases Cell Output'];
     return [
-      'Node increases cell output.',
+      'Increases cell output.',
       `1 point here is worth ${ratio} points`,
       'in a 1x cell node.',
     ];
   }
-  return [name];
+  if (resource === 'shards') return ['Increases Shards'];
+  if (resource === 'research') return ['Increases Research'];
+  if (resource === 'modpoints') return ['Increases MP'];
+  if (resource === 'materials') return ['Increases Materials'];
+  if (resource === 'academy_points') return ['Increases AP'];
+  if (resource === 'special') return [`Special effect: ${ratio}`];
+  return [resource];
 }
 
 function boostHalfWidth(boosts) {
@@ -57,7 +52,7 @@ function boostHalfWidth(boosts) {
   return 10;
 }
 
-export function hexAnnotationRows({ boosts, generator, number }) {
+export function hexAnnotationRows({ boosts, generator, number, showMeltdown = false }) {
   const rows = [];
   const bHW = boostHalfWidth(boosts);
   const boostSpread = boosts.length > 1 ? 5 : 0;
@@ -71,7 +66,7 @@ export function hexAnnotationRows({ boosts, generator, number }) {
       halfW: bHW,
     });
   }
-  if (generator) {
+  if (generator && showMeltdown) {
     rows.push({
       lines: ['Uses generators', '(affected by meltdown)'],
       srcX: cx,

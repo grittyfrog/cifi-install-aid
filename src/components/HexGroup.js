@@ -23,11 +23,11 @@ export function hexY(row) {
 
 export { layout };
 
-export function HexGroup(svg, { hexes = {}, x = 0, y = 0, scale = 1, shipId = '' }) {
+export function HexGroup(svg, { hexes = {}, x = 0, y = 0, scale = 1, shipId = '', showGenerators = false }) {
   return svg`
     <g transform=${`translate(${x}, ${y}) scale(${scale})`}>
       ${layout.map(([number, col, row]) =>
-        CifiHex(svg, { number, x: hexX(col, row), y: hexY(row), shipId, ...(hexes[number] || {}) })
+        CifiHex(svg, { number, x: hexX(col, row), y: hexY(row), shipId, showGenerators, ...(hexes[number] || {}) })
       )}
     </g>
   `;

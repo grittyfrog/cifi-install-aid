@@ -124,7 +124,7 @@ function renderBoosts(svg, boosts) {
   return null;
 }
 
-export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [], generator = false, shipId = '' }) {
+export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [], generator = false, shipId = '', showGenerators = false }) {
   return svg`
     <g class="cifi-hex" data-hex-number=${number} data-ship-id=${shipId}
       transform=${`translate(${x}, ${y}) scale(${scale})`} shape-rendering="geometricPrecision"
@@ -167,7 +167,7 @@ export function CifiHex(svg, { number = 1, x = 0, y = 0, scale = 1, boosts = [],
       <polygon points=${hex} class="hex-hover-glow" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0"
         transform="translate(16.02, 18.5) scale(1.08) translate(-16.02, -18.5)"/>
 
-      ${generator ? svg`
+      ${generator && showGenerators ? svg`
         <image href=${generatorIcon} x=${cx - 12} y=${bodyCenter - 14}
           width="24" height="24" opacity="0.15" />
       ` : null}
