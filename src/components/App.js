@@ -27,9 +27,9 @@ function makeCradleHexes(generators) {
 
 function makeAuxesiaHexes(generators) {
   return {
-    1: { boosts: [["cells", 1]] },
-    2: { boosts: [["cells", 1]], generator: true },
-    3: { boosts: [["cells", 1]], generator: true },
+    1: { boosts: [["cells", generators]], generator: true },
+    2: { boosts: [["cells", generators]], generator: true },
+    3: { boosts: [["cells", 1]] },
     4: { boosts: [["cells", 1]], generator: true },
     5: { boosts: [["cells", 1]], generator: true },
     6: { boosts: [["cells", 1]], generator: true },
