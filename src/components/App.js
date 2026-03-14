@@ -167,7 +167,7 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
       <div class="controls">
         <div class="controls-row">
           <div class="power-bar">
-            <span class="power-label">Ships<small>click latest unlocked</small></span>
+            <span class="power-label ship-selector-label">Ships<small>click latest unlocked</small></span>
             <div class="ship-selector">
               ${ships.map((ship, i) => html`
                 <button
@@ -194,7 +194,7 @@ export function App(html, svg, { generators = 1, shipsUnlocked = 1, meltdown = 0
             </div>
             ${showMeltdown ? html`
               <div class="power-bar">
-                <span class="power-label">Meltdown</span>
+                <span class="power-label"><span class="label-full">Meltdown</span><span class="label-short">Melt</span></span>
                 <input id="meltdown" type="text" inputmode="decimal" maxlength="5" value=${meltdown} />
               </div>
             ` : html`
