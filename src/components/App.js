@@ -113,7 +113,7 @@ function makeZeusHexes(generators) {
     4: { boosts: [["cells", 1], ["shards", 1]] },
     5: { boosts: [["cells", 1], ["research", 1]] },
     6: { boosts: [["modpoints", 1], ["materials", 1]] },
-    7: { boosts: [["cells", Math.min(generators, 6)], ["academy_points", 1]], generator: true },
+    7: { boosts: [["cells", generators], ["academy_points", 1]], generator: true },
     8: { boosts: [["cells", generators]], generator: true },
     9: { boosts: [["cells", 1]] },
     10: { boosts: [["shards", 1]] },
